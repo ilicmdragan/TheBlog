@@ -1,4 +1,4 @@
-# Blog
+# TheBlog
 
 # Project Name
 Create A Simple Blog With Python and Django by Codemy.com - Steve Elder
