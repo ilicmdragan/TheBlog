@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static%}
+
+{% block title%}
+{{ object.title_tag }}
+{% endblock %}
+
+{% block content %}
+
+Current user: {{user.first_name}}
+Post user: {{object.author.first_name}}
+
+<h1>{{ object.title }}</h1>
+
+<small>By: {{ object.author.first_name }} {{ object.author.last_name }} - {{object.post_date}}
+
+    {% if user.is_authenticated %}
+    {% if user.id == object.author.id %}
+    - <a href="{% url 'update_post' object.pk %}">Edit</a>
+    - <a href="{% url 'delete_post' object.pk %}">Delete</a></small>
+{% endif %}
+{% endif %}
+
+<hr>
+
+{%if post.header_image%}
+    <img = src="{{post.header_image.url}}" width=400 height=300>
+{%endif%}
+
+<br/>
+{{object.body | safe}}
+<br/><br/>
+<hr>
+<br />
+<form action="{% url 'like_post' post.pk %}" method="POST">
+    {% csrf_token %}
+
+    {% if user.is_authenticated %}
+    {%if liked %}
+    <button type="submit" , name="post_id" , value="{{post.id}}" , class="btn btn-danger btn-sm">Unlike
+    </button>
+    {%else%}
+    <button type="submit" , name="post_id" , value="{{post.id}}" , class="btn btn-primary btn-sm">Like
+    </button>
+    {%endif%}
+    {% else %}
+    <small> <a href="{% url 'login' %}">Login</a> to like </small>
+    {%endif%}
+    - {{ total_likes }} likes
+</form>
+<hr>
+
+<h2>Comments....</h2>
+
+{% if not post.comments.all %}
+  No comments yet ....<a href="#"> Add One</a>
+  {%else%}
+    {% for comment in post.comments.all %}
+      <strong>
+        {{ comment.name }} - {{ comment.date_added }}
+      </strong>
+      <br/>
+      {{ comment.body }}
+      <br/>
+      
+      <br/><br/>
+    {%endfor%}
+{%endif%}
+<hr>
+
+<div class="card mb-3"">
+    <div class="row g-0">
+      <div class="col-md-2">
+
+        {% if object.author.profile.profile_pic%}
+        <img src="{{ object.author.profile.profile_pic.url }}" class="img-fluid">
+        
+        {%else%}
+        <img src="{% static '/theblog/images/faceless.jpg'%}" class="img-fluid rounded-start">
+
+        {%endif%}
+      </div>
+      <div class="col-md-10">
+        <div class="card-body">
+          <h5 class="card-title">
+            {{ object.author.first_name }} {{ object.author.last_name }}
+          </h5>
+          <p class = "small text-muted">
+
+            <a href="{% url 'show_profile_page' post.author.profile.id %}">Profile Page</a> |
+
+            {% if object.author.profile.website_url %}
+            <a href="{{ object.author.profile.website_url }}">Website</a> |
+            {%endif%}
+            {% if object.author.profile.facebook_url %}
+            <a href="{{ object.author.profile.facebook_url }}">Facebook</a> |
+            {%endif%}
+            {% if object.author.profile.linkedin_url %}
+            <a href="{{ object.author.profile.linkedin_url }}">LinkedIn</a> |
+            {%endif%}
+            {% if object.author.profile.instagram_url %}
+            <a href="{{ object.author.profile.instagram_url }}">Instagram</a> |
+            {%endif%}
+            {% if object.author.profile.pinterest_url %}
+            <a href="{{ object.author.profile.pinterest_url }}">Pinterest</a> |
+            {%endif%}        
+          </p>
+          <p class="card-text">{{ object.author.profile.bio }}</p>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
