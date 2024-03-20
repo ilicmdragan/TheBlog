@@ -1,7 +1,7 @@
 # TheBlog
 
 # Project Name
-Create A Simple Blog With Python and Django by Codemy.com - Steve Elder
+Create A Simple Blog With Python and Django by Codemy.com - John Elder
 
 ## Description
 This project is the result of my learning Python language and Django framework through practice. The project is created based on the instructions from the tutorial "Create A Simple Blog With Python and Django" which can be found on YouTube. The goal of the project is to master the basic understanding of Python language and Django framework through building a simple blog.
